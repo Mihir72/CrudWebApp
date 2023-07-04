@@ -1,0 +1,3 @@
+jdbcUrl=jdbc:mysql:///studentInfo
+dataSource.user=root
+dataSource.password=Mihir_java19
