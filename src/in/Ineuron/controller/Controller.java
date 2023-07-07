@@ -3,6 +3,7 @@ package in.Ineuron.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,10 +48,12 @@ public class Controller extends HttpServlet {
 			  response.setContentType("text/html");
 			  
 			  if(status.equalsIgnoreCase("success")) {
-				  out.println("<h1>Record Inserted Successfully...</h1>");
+				 RequestDispatcher requestDispatcher = request.getRequestDispatcher("../AddSuccess.html");
+				 requestDispatcher.forward(request, response);
 			  }
 			  else {
-				  out.println("<h1 style='color:Red;'>Fail to insert a record...</h1>");
+				   RequestDispatcher requestDispatcher = request.getRequestDispatcher("../AddFail.html");
+				   requestDispatcher.forward(request, response);
 			  }
 				   
 		  }
@@ -70,24 +73,30 @@ public class Controller extends HttpServlet {
 		    	     out.println("</body>");
 		       }
 		       else {
-		    	   out.println("<center>");
-		    	   out.println("<h1 style= 'color:Red'>No record available with this id...</h1>");
-		    	   out.println("</center>");
+		    	     RequestDispatcher requestDispatcher = request.getRequestDispatcher("../SearchFail.html");
+		    	     requestDispatcher.forward(request, response);
 		       }
 	  }
 		  
 		  else if(operation.endsWith("deleteform")) {
 			    int id = Integer.parseInt(request.getParameter("sid"));
 			    String status = service.deleteStudent(id);
-			    out.println("<center>");
-			    if(status.equalsIgnoreCase("success"))
-			    	out.println("<h1 style='color:Green'>Record Deleted Successfully...</h1>");
-			    else if(status.equalsIgnoreCase("not found"))
-			    	out.println("<h1 color:'Red'>No record available with this id...</h1>");
-			    else
-			    	out.println("<h1>Fail to delete the record...</h1>");
+			   
+			    if(status.equalsIgnoreCase("success")) {
+			    	RequestDispatcher requestDispatcher = request.getRequestDispatcher("../Deleted.html");
+			    	requestDispatcher.forward(request, response);
+			    }
+			    	
+			    else if(status.equalsIgnoreCase("not found")) {
+					RequestDispatcher requestDispatcher = request.getRequestDispatcher("../NotFound.html");
+					requestDispatcher.forward(request, response);
+				} else {
+					RequestDispatcher requestDispatcher = request.getRequestDispatcher("../Fail.html");
+					requestDispatcher.forward(request, response);
+				}
+			    	
 			    
-			    out.println("<center>"); 
+			    
 		  }
 		  
 		  else if(operation.endsWith("editform")) {
@@ -107,11 +116,8 @@ public class Controller extends HttpServlet {
 				  out.println("</form>");
 			  }
 			  else {
-				  out.println("<body>");
-				  out.println("<center>");
-				  out.println("<h1 style='color:Red'>No record available with this id...</h1>");
-				  out.println("</center>");
-				  out.println("</body>");
+				  RequestDispatcher requestDispatcher = request.getRequestDispatcher("..EditFail.html");
+				  requestDispatcher.forward(request, response);
 			  }
 		  }
 		  else if(operation.endsWith("updateForm")) {
@@ -126,18 +132,13 @@ public class Controller extends HttpServlet {
 			    student.setSaddress(address);
 			   String status =  service.updateStudent(student);
 			   if(status.equalsIgnoreCase("success")) {
-				   out.println("<body>");
-			       out.println("<center>");
-			       out.println("<h1 style='color:Green'>Record updated successfully...</h1>");
-			       out.println("</center>");
-			       out.println("</body>");
+				   RequestDispatcher requestDispatcher = request.getRequestDispatcher("../../UpdateSuccess.html");
+				   requestDispatcher.forward(request, response);
+			      
 		  }
 			  else {
-				   out.println("<body>");
-			       out.println("<center>");
-			       out.println("<h1 style='color:Red'>Updation failed...</h1>");
-			       out.println("</center>");
-			       out.println("</body>");
+				    RequestDispatcher requestDispatcher = request.getRequestDispatcher("../../UpdateFail.html");
+				    requestDispatcher.forward(request, response); 
 			      }
 		  }
 	}
